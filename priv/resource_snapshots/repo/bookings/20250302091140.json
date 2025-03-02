@@ -1,0 +1,76 @@
+{
+  "attributes": [
+    {
+      "allow_nil?": false,
+      "default": "nil",
+      "generated?": true,
+      "primary_key?": true,
+      "references": null,
+      "size": null,
+      "source": "id",
+      "type": "bigint"
+    },
+    {
+      "allow_nil?": false,
+      "default": "nil",
+      "generated?": false,
+      "primary_key?": false,
+      "references": null,
+      "size": null,
+      "source": "start",
+      "type": "naive_datetime"
+    },
+    {
+      "allow_nil?": false,
+      "default": "nil",
+      "generated?": false,
+      "primary_key?": false,
+      "references": null,
+      "size": null,
+      "source": "duration",
+      "type": "bigint"
+    },
+    {
+      "allow_nil?": false,
+      "default": "nil",
+      "generated?": false,
+      "primary_key?": false,
+      "references": null,
+      "size": null,
+      "source": "user_id",
+      "type": "bigint"
+    },
+    {
+      "allow_nil?": false,
+      "default": "fragment(\"(now() AT TIME ZONE 'utc')\")",
+      "generated?": false,
+      "primary_key?": false,
+      "references": null,
+      "size": null,
+      "source": "inserted_at",
+      "type": "utc_datetime_usec"
+    }
+  ],
+  "base_filter": null,
+  "check_constraints": [],
+  "custom_indexes": [],
+  "custom_statements": [
+    {
+      "code?": false,
+      "down": "ALTER TABLE bookings\nDROP CONSTRAINT bookings_cannot_overlap\n",
+      "name": "bookings_cannot_overlap",
+      "up": "ALTER TABLE bookings\nADD CONSTRAINT bookings_cannot_overlap\nEXCLUDE USING gist (\n  box(\n    point(\n      extract( epoch from start ), user_id\n    ),\n    point(\n      extract( epoch from start ) + duration - 1,\n      user_id + 0.5\n    )\n  )\n  WITH &&\n)\n"
+    }
+  ],
+  "has_create_action": true,
+  "hash": "7307FE368B26FA75DF268DDF586BC2066390FA0418346373D4A79C11B5F35B85",
+  "identities": [],
+  "multitenancy": {
+    "attribute": null,
+    "global": null,
+    "strategy": null
+  },
+  "repo": "Elixir.Bella.Repo",
+  "schema": null,
+  "table": "bookings"
+}
