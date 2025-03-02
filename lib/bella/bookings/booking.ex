@@ -5,7 +5,7 @@ defmodule Bella.Bookings.Booking do
     table "bookings"
     repo Bella.Repo
 
-    exclusion_constraint_names [{:bella, "bookings_cannot_overlap", "overlap error"}]
+    exclusion_constraint_names [{:start, "bookings_cannot_overlap", "overlap error"}]
 
     custom_statements do
       statement :bookings_cannot_overlap do
